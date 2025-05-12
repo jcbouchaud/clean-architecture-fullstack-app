@@ -1,0 +1,105 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+---
+description: Clean architecture best practices
+---
+
+# Clean Architecture
+
+## Project Structure
+- Organize code into distinct layers following clean architecture principles:
+  - `app/`: Next.js pages and route-specific components (Presentation Layer)
+  - `src/`: Core business logic and infrastructure
+    - `application/`: Use cases, interfaces, and application services
+    - `infrastructure/`: External services, databases, and frameworks
+    - `entities/`: Business objects and domain models
+    - `controllers/`: Business logic controllers
+  - `lib/`: Utilities and shared helpers
+
+## Layer Responsibilities
+
+### Presentation Layer (app/)
+- Handles UI and user interaction
+- Contains Next.js pages and components
+- Communicates with controllers for business logic
+- Place in `app/` directory:
+  - `page.tsx`: Route pages
+  - `layout.tsx`: Layout components
+  - `components/`: Route-specific components
+
+### Application Layer (src/application/)
+- Implements use cases and defines interfaces
+- Depends only on domain layer
+- Place in `src/application/` directory:
+  - `use-cases/`: Business use cases
+  - `repositories/`: Repository interfaces
+  - `services/`: Service interfaces
+
+### Infrastructure Layer (src/infrastructure/)
+- Implements interfaces defined in application layer
+- Handles external dependencies
+- Place in `src/infrastructure/` directory:
+  - `repositories/`: Repository implementations and mock implementations
+  - `services/`: External service implementations and mock implementations
+  - `database/`: Database configurations
+
+### Domain Layer (src/entities/)
+- Contains business entities and core business rules
+- Should be framework and technology agnostic
+- Place in `src/entities/` directory:
+  - `models/`: Business objects and domain models
+  - `errors/`: Domain-specific errors and exceptions
+
+### Controllers Layer (src/controllers/)
+- Orchestrates business logic between layers
+- Handles request/response flow
+- Coordinates between presentation and business logic
+- Place in `src/controllers/` directory:
+  - Business logic controllers
+
+## Dependency Rules
+- Inner layers cannot depend on outer layers
+- Domain layer (entities) has no external dependencies
+- Application layer depends only on domain layer
+- Infrastructure layer implements application layer interfaces
+- Controllers can depend on application and infrastructure
+- Presentation layer (app/) can depend on controllers
+
+## Best Practices
+- Use dependency injection for better testability
+- Implement interfaces for all external dependencies
+- Keep business logic in application and controllers layers
+- Use TypeScript for better type safety
+- Follow SOLID principles
+- Implement proper error handling at each layer
+- Use Zod for input validation in controllers
+- Keep components pure and focused
+
+## Testing Strategy
+- Unit tests for domain and application layers
+- Integration tests for infrastructure layer
+- E2E tests for presentation layer
+- Use proper mocking for external dependencies
+- Test business rules independently of framework
+
+## State Management
+- Keep state management close to where it's used
+- Implement proper loading states
+- Handle errors appropriately at each layer
+- Use appropriate state management patterns for each layer
+
+## Data Flow
+- Data should flow from outer layers to inner layers
+- Use Zod schemas for data validation at controller boundaries
+- Handle errors and edge cases appropriately
+- Use proper caching strategies
+
+## Code Organization
+- Use feature-based organization within layers
+- Keep related code together
+- Use proper naming conventions
+- Document interfaces and public APIs
+- Keep files focused and small
