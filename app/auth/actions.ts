@@ -1,31 +1,28 @@
 "use server";
 
-import { AuthController } from "@/controllers/auth.controller";
-import { AuthServiceImpl } from "@/infrastructure/services/auth.service";
+import { createAuthService } from "@/infrastructure/services/auth.service";
 import { AuthenticationError } from "@/entities/errors/authentication.error";
 import { redirect } from "next/navigation";
 import { cookies as nextCookies } from "next/headers";
 import { cookies } from "../utils/cookies";
+import { createLoginController } from "@/src/controllers/auth/login.controller";
+import { createSignupController } from "@/src/controllers/auth/signup.controller";
+import { createLogoutController } from "@/src/controllers/auth/logout.controller";
 
 type AuthState = {
   error: string;
   code: string;
 };
 
-const createAuthController = async () => {
-  const authController = new AuthController(new AuthServiceImpl(cookies));
-  return authController;
-};
-
 export async function login(prevState: AuthState, formData: FormData) {
-  const authController = await createAuthController();
   try {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    const response = await authController.login({ email, password });
+    const authService = createAuthService(cookies);
+    const loginController = createLoginController(authService);
+    const response = await loginController(email, password);
 
-    // Store the token in an HTTP-only cookie
     const cookiesInstance = await nextCookies();
     console.log("cookiesInstance", cookiesInstance);
     cookiesInstance.set("auth_token", response.token, {
@@ -54,10 +51,10 @@ export async function signup(prevState: AuthState, formData: FormData) {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    const authController = await createAuthController();
-    const response = await authController.signup({ email, password });
+    const authService = createAuthService(cookies);
+    const signupController = createSignupController(authService);
+    const response = await signupController(email, password);
 
-    // Store the token in an HTTP-only cookie
     const cookiesInstance = await nextCookies();
     cookiesInstance.set("auth_token", response.token, {
       httpOnly: true,
@@ -81,8 +78,9 @@ export async function signup(prevState: AuthState, formData: FormData) {
 }
 
 export async function logout() {
-  const authController = await createAuthController();
-  await authController.logout();
+  const authService = createAuthService(cookies);
+  const logoutController = createLogoutController(authService);
+  await logoutController();
   const cookiesInstance = await nextCookies();
   cookiesInstance.delete("auth_token");
   redirect("/auth");

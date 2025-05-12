@@ -22,7 +22,7 @@ export interface UserResponse {
   email: string;
 }
 
-export interface AuthService {
+export interface IAuthService {
   login(credentials: AuthCredentials): Promise<AuthResponse>;
   signup(credentials: AuthCredentials): Promise<AuthResponse>;
   logout(): Promise<void>;

@@ -1,13 +1,12 @@
 import {
-  AuthService,
+  IAuthService,
   AuthCredentials,
-} from "@/application/services/auth.service";
+} from "@/src/application/services/auth.service.interface";
 import {
   AuthenticationError,
   AuthenticationErrorCode,
 } from "@/entities/errors/authentication.error";
 import { createServerClient } from "@supabase/ssr";
-import { SupabaseClient } from "@supabase/supabase-js";
 
 interface Cookies {
   getAll(): Promise<{ name: string; value: string }[] | null>;
@@ -20,22 +19,18 @@ interface Cookies {
   ): Promise<void>;
 }
 
-export class AuthServiceImpl implements AuthService {
-  private client: SupabaseClient;
+export const createAuthService = (cookies: Cookies): IAuthService => {
+  const client = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies,
+    }
+  );
 
-  constructor(cookies: Cookies) {
-    this.client = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies,
-      }
-    );
-  }
-
-  async login(credentials: AuthCredentials) {
+  const login = async (credentials: AuthCredentials) => {
     try {
-      const { data, error } = await this.client.auth.signInWithPassword({
+      const { data, error } = await client.auth.signInWithPassword({
         email: credentials.email,
         password: credentials.password,
       });
@@ -72,11 +67,11 @@ export class AuthServiceImpl implements AuthService {
         error
       );
     }
-  }
+  };
 
-  async signup(credentials: AuthCredentials) {
+  const signup = async (credentials: AuthCredentials) => {
     try {
-      const { data, error } = await this.client.auth.signUp({
+      const { data, error } = await client.auth.signUp({
         email: credentials.email,
         password: credentials.password,
       });
@@ -114,11 +109,11 @@ export class AuthServiceImpl implements AuthService {
         error
       );
     }
-  }
+  };
 
-  async logout() {
+  const logout = async () => {
     try {
-      const { error } = await this.client.auth.signOut();
+      const { error } = await client.auth.signOut();
       if (error) {
         console.error("logout error", error);
         throw new AuthenticationError(
@@ -137,10 +132,10 @@ export class AuthServiceImpl implements AuthService {
         error
       );
     }
-  }
+  };
 
-  async getUser() {
-    const { data } = await this.client.auth.getUser();
+  const getUser = async () => {
+    const { data } = await client.auth.getUser();
 
     if (!data.user) {
       return null;
@@ -150,5 +145,12 @@ export class AuthServiceImpl implements AuthService {
       id: data.user.id,
       email: data.user.email ?? "",
     };
-  }
-}
+  };
+
+  return {
+    login,
+    signup,
+    logout,
+    getUser,
+  };
+};

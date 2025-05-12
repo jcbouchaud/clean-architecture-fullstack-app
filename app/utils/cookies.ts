@@ -1,4 +1,4 @@
-import { AuthServiceImpl } from "@/src/infrastructure/services/auth.service";
+import { createAuthService } from "@/src/infrastructure/services/auth.service";
 import { cookies as nextCookies } from "next/headers";
 import { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
@@ -60,7 +60,7 @@ export async function updateSession(request: NextRequest) {
       );
     },
   };
-  const authService = new AuthServiceImpl(cookies);
+  const authService = createAuthService(cookies);
   const user = await authService.getUser();
 
   if (!user && !request.nextUrl.pathname.startsWith("/auth")) {
