@@ -4,7 +4,7 @@ import { createAuthService } from "@/infrastructure/services/auth.service";
 import { AuthenticationError } from "@/entities/errors/authentication.error";
 import { redirect } from "next/navigation";
 import { cookies as nextCookies } from "next/headers";
-import { cookies } from "../utils/cookies";
+import { cookies } from "../lib/cookies";
 import { createLoginController } from "@/src/controllers/auth/login.controller";
 import { createSignupController } from "@/src/controllers/auth/signup.controller";
 import { createLogoutController } from "@/src/controllers/auth/logout.controller";

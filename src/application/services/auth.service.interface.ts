@@ -3,12 +3,6 @@ export interface AuthCredentials {
   password: string;
 }
 
-export interface HttpResponse {
-  status: number;
-  headers: Record<string, string>;
-  redirect?: string;
-}
-
 export interface AuthResponse {
   token: string;
   user: {
