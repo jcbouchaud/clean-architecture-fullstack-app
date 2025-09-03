@@ -8,6 +8,7 @@ description: Clean architecture best practices
 ---
 
 # Clean Architecture
+- Be as functional as possible
 
 ## Project Structure
 - Organize code into distinct layers following clean architecture principles:
