@@ -1,15 +1,19 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { createInvoiceUseCase } from "../create-invoice.use-case";
 import { getAllInvoicesUseCase } from "../get-all-invoices.use-case";
 import { getInvoiceUseCase } from "../get-invoice.use-case";
 import { updateInvoiceUseCase } from "../update-invoice.use-case";
 import { deleteInvoiceUseCase } from "../delete-invoice.use-case";
-import { createInvoiceMockRepository } from "../../../../infrastructure/repositories/invoice.mock.repository";
+import {
+  createInvoiceMockRepository,
+  resetMockRepository,
+} from "../../../../infrastructure/repositories/invoice.mock.repository";
 
 describe("Invoice Use Cases Integration Tests", () => {
   let mockRepository: ReturnType<typeof createInvoiceMockRepository>;
 
   beforeEach(() => {
+    resetMockRepository();
     mockRepository = createInvoiceMockRepository();
   });
 

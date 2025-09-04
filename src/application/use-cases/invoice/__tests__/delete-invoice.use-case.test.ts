@@ -2,7 +2,10 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 import { deleteInvoiceUseCase } from "../delete-invoice.use-case";
 import { createInvoiceUseCase } from "../create-invoice.use-case";
 import { getAllInvoicesUseCase } from "../get-all-invoices.use-case";
-import { createInvoiceMockRepository } from "../../../../infrastructure/repositories/invoice.mock.repository";
+import {
+  createInvoiceMockRepository,
+  resetMockRepository,
+} from "../../../../infrastructure/repositories/invoice.mock.repository";
 import { Invoice } from "@/src/entities/invoice";
 
 describe("Delete Invoice Use Case", () => {
@@ -10,6 +13,7 @@ describe("Delete Invoice Use Case", () => {
   let existingInvoice: Invoice;
 
   beforeEach(async () => {
+    resetMockRepository();
     mockRepository = createInvoiceMockRepository();
     const createInvoice = createInvoiceUseCase(mockRepository);
     existingInvoice = await createInvoice({
