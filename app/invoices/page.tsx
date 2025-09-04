@@ -1,13 +1,13 @@
 import { Invoice } from "@/src/entities/invoice";
 import { createGetAllInvoicesController } from "@/src/controllers/invoice/get-all-invoices.controller";
-import { createInvoiceMockRepository } from "@/src/infrastructure/repositories/invoice.mock.repository";
 import InvoiceActions from "./_components/invoice-actions";
 import InvoiceRow from "./_components/invoice-row";
+import { createInvoiceRepository } from "@/src/infrastructure/repositories/invoice.repository";
+import { cookies } from "../lib/cookies";
 
 async function getInvoices(): Promise<Invoice[]> {
-  const repository = createInvoiceMockRepository();
+  const repository = createInvoiceRepository(cookies);
   const controller = createGetAllInvoicesController(repository);
-  await new Promise((resolve) => setTimeout(resolve, 500));
   return await controller();
 }
 

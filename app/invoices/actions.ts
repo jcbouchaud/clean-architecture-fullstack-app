@@ -5,9 +5,20 @@ import { createCreateInvoiceController } from "@/src/controllers/invoice/create-
 import { createUpdateInvoiceController } from "@/src/controllers/invoice/update-invoice.controller";
 import { createDeleteInvoiceController } from "@/src/controllers/invoice/delete-invoice.controller";
 import { CreateInvoiceInput, UpdateInvoiceInput } from "@/src/entities/invoice";
-import { createInvoiceMockRepository } from "@/src/infrastructure/repositories/invoice.mock.repository";
+import { createInvoiceRepository } from "@/src/infrastructure/repositories/invoice.repository";
+import { cookies } from "../lib/cookies";
 
-export async function createInvoice(formData: FormData) {
+type ActionState =
+  | {
+      error: string;
+      code: string;
+    }
+  | undefined;
+
+export async function createInvoice(
+  prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
   try {
     const data: CreateInvoiceInput = {
       clientName: formData.get("clientName") as string,
@@ -16,14 +27,16 @@ export async function createInvoice(formData: FormData) {
       attachment: (formData.get("attachment") as string) || undefined,
     };
 
-    const repository = createInvoiceMockRepository();
+    const repository = createInvoiceRepository(cookies);
     const controller = createCreateInvoiceController(repository);
     await controller(data);
-    revalidatePath("/invoices");
   } catch (error) {
-    console.error("Failed to create invoice:", error);
-    throw new Error("Failed to create invoice");
+    return {
+      error: `Failed to create invoice: ${error}`,
+      code: "UNKNOWN",
+    };
   }
+  revalidatePath("/invoices");
 }
 
 export async function updateInvoice(formData: FormData) {
@@ -36,7 +49,7 @@ export async function updateInvoice(formData: FormData) {
       attachment: (formData.get("attachment") as string) || undefined,
     };
 
-    const repository = createInvoiceMockRepository();
+    const repository = createInvoiceRepository(cookies);
     const controller = createUpdateInvoiceController(repository);
     await controller(data);
     revalidatePath("/invoices");
@@ -49,7 +62,7 @@ export async function updateInvoice(formData: FormData) {
 export async function deleteInvoice(formData: FormData) {
   try {
     const id = formData.get("id") as string;
-    const repository = createInvoiceMockRepository();
+    const repository = createInvoiceRepository(cookies);
     const controller = createDeleteInvoiceController(repository);
     await controller(id);
     revalidatePath("/invoices");

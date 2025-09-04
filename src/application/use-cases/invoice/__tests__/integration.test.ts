@@ -94,7 +94,10 @@ describe("Invoice Use Cases Integration Tests", () => {
     // Verify remaining invoices
     allInvoices = await getAllInvoices();
     expect(allInvoices).toHaveLength(2);
-    expect(allInvoices.map(inv => inv.clientName)).toEqual(["Client A", "Client C"]);
+    expect(allInvoices.map((inv) => inv.clientName)).toEqual([
+      "Client A",
+      "Client C",
+    ]);
 
     // Delete remaining invoices
     await deleteInvoice(invoice1.id);
@@ -105,4 +108,3 @@ describe("Invoice Use Cases Integration Tests", () => {
     expect(allInvoices).toHaveLength(0);
   });
 });
-

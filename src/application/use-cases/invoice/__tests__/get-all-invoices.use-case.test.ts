@@ -1,13 +1,17 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { getAllInvoicesUseCase } from "../get-all-invoices.use-case";
 import { createInvoiceUseCase } from "../create-invoice.use-case";
-import { createInvoiceMockRepository } from "../../../../infrastructure/repositories/invoice.mock.repository";
+import {
+  createInvoiceMockRepository,
+  resetMockRepository,
+} from "../../../../infrastructure/repositories/invoice.mock.repository";
 
 describe("Get All Invoices Use Case", () => {
   let mockRepository: ReturnType<typeof createInvoiceMockRepository>;
 
   beforeEach(() => {
     mockRepository = createInvoiceMockRepository();
+    resetMockRepository();
   });
 
   it("should return empty array when no invoices exist", async () => {
@@ -50,4 +54,3 @@ describe("Get All Invoices Use Case", () => {
     await expect(getAllInvoices()).rejects.toThrow("Database error");
   });
 });
-

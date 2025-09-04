@@ -1,9 +1,18 @@
+"use client";
+
+import { useActionState } from "react";
 import { createInvoice } from "../actions";
 
+const initialState = {
+  error: "",
+  code: "",
+};
+
 export default function InvoiceActions() {
+  const [state, formAction] = useActionState(createInvoice, initialState);
   return (
     <div>
-      <form action={createInvoice} className="space-y-4">
+      <form action={formAction} className="space-y-4">
         <div className="flex space-x-4 items-end">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -67,6 +76,9 @@ export default function InvoiceActions() {
           </button>
         </div>
       </form>
+      {state?.error && (
+        <div className="text-red-500 text-sm text-center">{state?.error}</div>
+      )}
     </div>
   );
 }

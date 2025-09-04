@@ -4,26 +4,37 @@ import {
   CreateInvoiceInput,
   UpdateInvoiceInput,
 } from "@/src/entities/invoice";
-import { createClient } from "@supabase/supabase-js";
+import { Cookies, createClient } from "../supabase/utils";
 
-// Repository factory function
-export const createInvoiceRepository = (): IInvoiceRepository => {
-  // Create Supabase client internally
-  const supabaseClient = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+export const createInvoiceRepository = (
+  cookies: Cookies
+): IInvoiceRepository => {
+  const supabaseClient = createClient(cookies);
 
   return {
     async create(input: CreateInvoiceInput): Promise<Invoice> {
+      const { clientName, dateIssued, vatRate, attachment } = input;
       const { data, error } = await supabaseClient
         .from("invoices")
-        .insert([input])
+        .insert([
+          {
+            client_name: clientName,
+            date_issued: dateIssued.toISOString(),
+            vat_rate: vatRate,
+            attachment: attachment,
+          },
+        ])
         .select()
         .single();
 
       if (error) throw error;
-      return data;
+      return {
+        id: data.id,
+        clientName: data.client_name,
+        dateIssued: new Date(data.date_issued),
+        vatRate: data.vat_rate,
+        attachment: data.attachment || undefined,
+      };
     },
 
     async findById(id: string): Promise<Invoice | null> {
@@ -34,31 +45,53 @@ export const createInvoiceRepository = (): IInvoiceRepository => {
         .single();
 
       if (error) throw error;
-      return data;
+      return {
+        id: data.id,
+        clientName: data.client_name,
+        dateIssued: new Date(data.date_issued),
+        vatRate: data.vat_rate,
+        attachment: data.attachment || undefined,
+      };
     },
 
     async findAll(): Promise<Invoice[]> {
       const { data, error } = await supabaseClient
         .from("invoices")
         .select()
-        .order("dateIssued", { ascending: false });
+        .order("date_issued", { ascending: false });
 
       if (error) throw error;
-      return data || [];
+      return data.map((invoice) => ({
+        id: invoice.id,
+        clientName: invoice.client_name,
+        dateIssued: new Date(invoice.date_issued),
+        vatRate: invoice.vat_rate,
+        attachment: invoice.attachment || undefined,
+      }));
     },
-    // TODO: Implement database query using dbSession
 
     async update(input: UpdateInvoiceInput): Promise<Invoice> {
       const { id, ...updateData } = input;
       const { data, error } = await supabaseClient
         .from("invoices")
-        .update(updateData)
+        .update({
+          client_name: updateData.clientName,
+          date_issued: updateData.dateIssued?.toISOString(),
+          vat_rate: updateData.vatRate,
+          attachment: updateData.attachment,
+        })
         .eq("id", id)
         .select()
         .single();
 
       if (error) throw error;
-      return data;
+      return {
+        id: data.id,
+        clientName: data.client_name,
+        dateIssued: new Date(data.date_issued),
+        vatRate: data.vat_rate,
+        attachment: data.attachment || undefined,
+      };
     },
     async delete(id: string): Promise<void> {
       const { error } = await supabaseClient

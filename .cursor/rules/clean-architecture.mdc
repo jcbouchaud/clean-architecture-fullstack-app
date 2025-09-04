@@ -1,22 +1,16 @@
 ---
-description: 
-globs: 
-alwaysApply: false
----
----
 description: Clean architecture best practices
 ---
 
 # Clean Architecture
-- Be as functional as possible
 
 ## Project Structure
 - Organize code into distinct layers following clean architecture principles:
   - `app/`: Next.js pages and route-specific components (Presentation Layer)
   - `src/`: Core business logic and infrastructure
-    - `application/`: Use cases, interfaces, and application services
-    - `infrastructure/`: External services, databases, and frameworks
-    - `entities/`: Business objects and domain models
+    - `application/`: Use cases, interfaces for services, repositories
+    - `infrastructure/`: External services, implemented repositories
+    - `entities/`: Business objects, domain models, domain errors
     - `controllers/`: Business logic controllers
   - `lib/`: Utilities and shared helpers
 
@@ -28,8 +22,9 @@ description: Clean architecture best practices
 - Communicates with controllers for business logic
 - Place in `app/` directory:
   - `page.tsx`: Route pages
+  - `actions.ts`: Server actions at page level
   - `layout.tsx`: Layout components
-  - `components/`: Route-specific components
+  - `_components/`: Route-specific components
 
 ### Application Layer (src/application/)
 - Implements use cases and defines interfaces
@@ -70,7 +65,7 @@ description: Clean architecture best practices
 - Presentation layer (app/) can depend on controllers
 
 ## Best Practices
-- Use dependency injection for better testability
+- Clean Architecture tends to be from OOP paradigm, here we will focus on being functionnal, to be more 'React'
 - Implement interfaces for all external dependencies
 - Keep business logic in application and controllers layers
 - Use TypeScript for better type safety
@@ -80,17 +75,8 @@ description: Clean architecture best practices
 - Keep components pure and focused
 
 ## Testing Strategy
-- Unit tests for domain and application layers
-- Integration tests for infrastructure layer
-- E2E tests for presentation layer
+- Unit tests for domain layer, use cases and controllers
 - Use proper mocking for external dependencies
-- Test business rules independently of framework
-
-## State Management
-- Keep state management close to where it's used
-- Implement proper loading states
-- Handle errors appropriately at each layer
-- Use appropriate state management patterns for each layer
 
 ## Data Flow
 - Data should flow from outer layers to inner layers

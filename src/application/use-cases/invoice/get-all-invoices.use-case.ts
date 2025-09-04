@@ -11,6 +11,7 @@ export const getAllInvoicesUseCase = (
       if (error instanceof Error) {
         throw error;
       }
+      console.error(error);
       throw new Error("An unexpected error occurred while retrieving invoices");
     }
   };

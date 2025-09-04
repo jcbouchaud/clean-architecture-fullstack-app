@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { createInvoiceUseCase } from "../create-invoice.use-case";
 import { createInvoiceMockRepository } from "../../../../infrastructure/repositories/invoice.mock.repository";
 import { CreateInvoiceInput } from "@/src/entities/invoice";
@@ -147,4 +147,3 @@ describe("Create Invoice Use Case", () => {
     expect(result.dateOfPayment).toEqual(sameDate);
   });
 });
-

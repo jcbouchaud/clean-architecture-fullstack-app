@@ -5,14 +5,21 @@ import {
   UpdateInvoiceInput,
 } from "@/src/entities/invoice";
 
+// Global state - shared across all instances
+let globalInvoices: Invoice[] = [
+  {
+    id: "1",
+    clientName: "Client 1",
+    dateIssued: new Date("2024-01-01"),
+    vatRate: 20,
+  },
+];
+let globalNextId = 1;
+
 // Repository factory function
 export const createInvoiceMockRepository = (): IInvoiceRepository => {
-  // In-memory storage (in a real app, this would use a database)
-  let invoices: Invoice[] = [];
-  let nextId = 1;
-
   // Pure functions for invoice operations
-  const generateId = (): string => `INV-${nextId++}`;
+  const generateId = (): string => `INV-${globalNextId++}`;
 
   const findInvoiceById = (
     id: string,
@@ -29,39 +36,57 @@ export const createInvoiceMockRepository = (): IInvoiceRepository => {
         id: generateId(),
         ...input,
       };
-      invoices = [...invoices, invoice];
+      globalInvoices = [...globalInvoices, invoice];
       return invoice;
     },
 
     async findById(id: string): Promise<Invoice | null> {
-      return findInvoiceById(id, invoices);
+      return findInvoiceById(id, globalInvoices);
     },
 
     async findAll(): Promise<Invoice[]> {
-      return [...invoices];
+      return [...globalInvoices];
     },
 
     async update(input: UpdateInvoiceInput): Promise<Invoice> {
-      const index = findInvoiceIndexById(input.id, invoices);
+      const index = findInvoiceIndexById(input.id, globalInvoices);
       if (index === -1) {
         throw new Error("Invoice not found");
       }
 
-      const updatedInvoice = { ...invoices[index], ...input };
-      invoices = [
-        ...invoices.slice(0, index),
+      const updatedInvoice = { ...globalInvoices[index], ...input };
+      globalInvoices = [
+        ...globalInvoices.slice(0, index),
         updatedInvoice,
-        ...invoices.slice(index + 1),
+        ...globalInvoices.slice(index + 1),
       ];
       return updatedInvoice;
     },
 
     async delete(id: string): Promise<void> {
-      const index = findInvoiceIndexById(id, invoices);
+      const index = findInvoiceIndexById(id, globalInvoices);
       if (index === -1) {
         throw new Error("Invoice not found");
       }
-      invoices = invoices.filter((_, i) => i !== index);
+      globalInvoices = globalInvoices.filter((_, i) => i !== index);
     },
   };
+};
+
+// Utility functions for testing and development
+export const resetMockRepository = (): void => {
+  globalInvoices = [];
+  globalNextId = 1;
+};
+
+export const seedMockRepository = (invoices: Invoice[]): void => {
+  globalInvoices = [...invoices];
+  globalNextId = invoices.length + 1;
+};
+
+export const getMockRepositoryState = (): {
+  invoices: Invoice[];
+  nextId: number;
+} => {
+  return { invoices: [...globalInvoices], nextId: globalNextId };
 };

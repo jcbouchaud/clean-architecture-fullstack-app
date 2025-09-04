@@ -38,13 +38,17 @@ describe("Delete Invoice Use Case", () => {
   it("should throw error for empty ID", async () => {
     const deleteInvoice = deleteInvoiceUseCase(mockRepository);
 
-    await expect(deleteInvoice("")).rejects.toThrow("Invoice ID cannot be empty");
+    await expect(deleteInvoice("")).rejects.toThrow(
+      "Invoice ID cannot be empty"
+    );
   });
 
   it("should throw error for whitespace-only ID", async () => {
     const deleteInvoice = deleteInvoiceUseCase(mockRepository);
 
-    await expect(deleteInvoice("   ")).rejects.toThrow("Invoice ID cannot be empty");
+    await expect(deleteInvoice("   ")).rejects.toThrow(
+      "Invoice ID cannot be empty"
+    );
   });
 
   it("should handle repository errors gracefully", async () => {
@@ -54,9 +58,6 @@ describe("Delete Invoice Use Case", () => {
 
     const deleteInvoice = deleteInvoiceUseCase(mockRepository);
 
-    await expect(deleteInvoice("test-id")).rejects.toThrow(
-      "Database error"
-    );
+    await expect(deleteInvoice("test-id")).rejects.toThrow("Database error");
   });
 });
-

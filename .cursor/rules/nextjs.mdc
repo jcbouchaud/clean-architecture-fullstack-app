@@ -1,9 +1,4 @@
 ---
-description: 
-globs: 
-alwaysApply: false
----
----
 description: Next.js with TypeScript and Tailwind UI best practices
 globs: **/*.tsx, **/*.ts, src/**/*.ts, src/**/*.tsx
 ---
@@ -15,7 +10,7 @@ globs: **/*.tsx, **/*.ts, src/**/*.ts, src/**/*.tsx
 - Place components in `app` directory for route-specific components
 - Place shared components in `app/_components` directory
 - Place utilities and helpers in `app/_lib` directory
-- Use lowercase with dashes for directories (e.g., `components/auth-wizard`)
+- Use lowercase with dashes for directories (e.g., `_components/auth-wizard`)
 ## Components
 - Use Server Components by default
 - Mark client components explicitly with 'use client'

@@ -152,4 +152,3 @@ describe("Update Invoice Use Case", () => {
     await expect(updateInvoice(updateInput)).rejects.toThrow("Database error");
   });
 });
-

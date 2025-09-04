@@ -56,4 +56,3 @@ describe("Get Invoice Use Case", () => {
     await expect(getInvoice("test-id")).rejects.toThrow("Database error");
   });
 });
-

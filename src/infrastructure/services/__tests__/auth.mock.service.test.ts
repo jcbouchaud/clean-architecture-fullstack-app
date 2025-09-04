@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { createAuthMockService } from "./auth.mock.service";
+import { createAuthMockService } from "../auth.mock.service";
 import {
   AuthenticationError,
   AuthenticationErrorCode,

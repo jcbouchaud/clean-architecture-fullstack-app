@@ -6,27 +6,10 @@ import {
   AuthenticationError,
   AuthenticationErrorCode,
 } from "@/entities/errors/authentication.error";
-import { createServerClient } from "@supabase/ssr";
-
-interface Cookies {
-  getAll(): Promise<{ name: string; value: string }[] | null>;
-  setAll(
-    cookies: {
-      name: string;
-      value: string;
-      options?: { path?: string; domain?: string; secure?: boolean };
-    }[]
-  ): Promise<void>;
-}
+import { Cookies, createClient } from "../supabase/utils";
 
 export const createAuthService = (cookies: Cookies): IAuthService => {
-  const client = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies,
-    }
-  );
+  const client = createClient(cookies);
 
   const login = async (credentials: AuthCredentials) => {
     try {
