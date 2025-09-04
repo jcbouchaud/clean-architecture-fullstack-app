@@ -2,6 +2,7 @@ import { createAuthService } from "@/src/infrastructure/services/auth.service";
 import { cookies as nextCookies } from "next/headers";
 import { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { createClient } from "./client";
 
 export const cookies: {
   getAll: () => Promise<{ name: string; value: string }[]>;
@@ -60,7 +61,8 @@ export async function updateSession(request: NextRequest) {
       );
     },
   };
-  const authService = createAuthService(cookies);
+  const client = await createClient(cookies);
+  const authService = createAuthService(client);
   const user = await authService.getUser();
 
   if (!user && !request.nextUrl.pathname.startsWith("/auth")) {

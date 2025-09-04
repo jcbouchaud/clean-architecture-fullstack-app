@@ -6,7 +6,7 @@ import { createUpdateInvoiceController } from "@/src/controllers/invoice/update-
 import { createDeleteInvoiceController } from "@/src/controllers/invoice/delete-invoice.controller";
 import { CreateInvoiceInput, UpdateInvoiceInput } from "@/src/entities/invoice";
 import { createInvoiceRepository } from "@/src/infrastructure/repositories/invoice.repository";
-import { cookies } from "../lib/cookies";
+import { createClient } from "../lib/client";
 
 type ActionState =
   | {
@@ -27,7 +27,8 @@ export async function createInvoice(
       attachment: (formData.get("attachment") as string) || undefined,
     };
 
-    const repository = createInvoiceRepository(cookies);
+    const client = await createClient();
+    const repository = createInvoiceRepository(client);
     const controller = createCreateInvoiceController(repository);
     await controller(data);
   } catch (error) {
@@ -49,7 +50,8 @@ export async function updateInvoice(formData: FormData) {
       attachment: (formData.get("attachment") as string) || undefined,
     };
 
-    const repository = createInvoiceRepository(cookies);
+    const client = await createClient();
+    const repository = createInvoiceRepository(client);
     const controller = createUpdateInvoiceController(repository);
     await controller(data);
     revalidatePath("/invoices");
@@ -62,7 +64,8 @@ export async function updateInvoice(formData: FormData) {
 export async function deleteInvoice(formData: FormData) {
   try {
     const id = formData.get("id") as string;
-    const repository = createInvoiceRepository(cookies);
+    const client = await createClient();
+    const repository = createInvoiceRepository(client);
     const controller = createDeleteInvoiceController(repository);
     await controller(id);
     revalidatePath("/invoices");

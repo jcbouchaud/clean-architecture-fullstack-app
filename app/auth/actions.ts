@@ -3,8 +3,8 @@
 import { createAuthService } from "@/infrastructure/services/auth.service";
 import { AuthenticationError } from "@/entities/errors/authentication.error";
 import { redirect } from "next/navigation";
+import { createClient } from "../lib/client";
 import { cookies as nextCookies } from "next/headers";
-import { cookies } from "../lib/cookies";
 import { createLoginController } from "@/src/controllers/auth/login.controller";
 import { createSignupController } from "@/src/controllers/auth/signup.controller";
 import { createLogoutController } from "@/src/controllers/auth/logout.controller";
@@ -18,8 +18,8 @@ export async function login(prevState: AuthState, formData: FormData) {
   try {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-
-    const authService = createAuthService(cookies);
+    const client = await createClient();
+    const authService = createAuthService(client);
     const loginController = createLoginController(authService);
     const response = await loginController(email, password);
 
@@ -50,8 +50,8 @@ export async function signup(prevState: AuthState, formData: FormData) {
   try {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-
-    const authService = createAuthService(cookies);
+    const client = await createClient();
+    const authService = createAuthService(client);
     const signupController = createSignupController(authService);
     const response = await signupController(email, password);
 
@@ -78,7 +78,8 @@ export async function signup(prevState: AuthState, formData: FormData) {
 }
 
 export async function logout() {
-  const authService = createAuthService(cookies);
+  const client = await createClient();
+  const authService = createAuthService(client);
   const logoutController = createLogoutController(authService);
   await logoutController();
   const cookiesInstance = await nextCookies();

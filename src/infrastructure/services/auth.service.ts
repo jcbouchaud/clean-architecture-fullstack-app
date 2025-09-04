@@ -6,11 +6,9 @@ import {
   AuthenticationError,
   AuthenticationErrorCode,
 } from "@/entities/errors/authentication.error";
-import { Cookies, createClient } from "../supabase/utils";
+import { SupabaseClient } from "@supabase/supabase-js";
 
-export const createAuthService = (cookies: Cookies): IAuthService => {
-  const client = createClient(cookies);
-
+export const createAuthService = (client: SupabaseClient): IAuthService => {
   const login = async (credentials: AuthCredentials) => {
     try {
       const { data, error } = await client.auth.signInWithPassword({

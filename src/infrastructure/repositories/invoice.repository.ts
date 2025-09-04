@@ -4,17 +4,15 @@ import {
   CreateInvoiceInput,
   UpdateInvoiceInput,
 } from "@/src/entities/invoice";
-import { Cookies, createClient } from "../supabase/utils";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 export const createInvoiceRepository = (
-  cookies: Cookies
+  client: SupabaseClient
 ): IInvoiceRepository => {
-  const supabaseClient = createClient(cookies);
-
   return {
     async create(input: CreateInvoiceInput): Promise<Invoice> {
       const { clientName, dateIssued, vatRate, attachment } = input;
-      const { data, error } = await supabaseClient
+      const { data, error } = await client
         .from("invoices")
         .insert([
           {
@@ -38,7 +36,7 @@ export const createInvoiceRepository = (
     },
 
     async findById(id: string): Promise<Invoice | null> {
-      const { data, error } = await supabaseClient
+      const { data, error } = await client
         .from("invoices")
         .select()
         .eq("id", id)
@@ -55,7 +53,7 @@ export const createInvoiceRepository = (
     },
 
     async findAll(): Promise<Invoice[]> {
-      const { data, error } = await supabaseClient
+      const { data, error } = await client
         .from("invoices")
         .select()
         .order("date_issued", { ascending: false });
@@ -72,7 +70,7 @@ export const createInvoiceRepository = (
 
     async update(input: UpdateInvoiceInput): Promise<Invoice> {
       const { id, ...updateData } = input;
-      const { data, error } = await supabaseClient
+      const { data, error } = await client
         .from("invoices")
         .update({
           client_name: updateData.clientName,
@@ -94,10 +92,7 @@ export const createInvoiceRepository = (
       };
     },
     async delete(id: string): Promise<void> {
-      const { error } = await supabaseClient
-        .from("invoices")
-        .delete()
-        .eq("id", id);
+      const { error } = await client.from("invoices").delete().eq("id", id);
 
       if (error) throw error;
     },

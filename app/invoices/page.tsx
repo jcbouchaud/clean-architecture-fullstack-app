@@ -3,10 +3,11 @@ import { createGetAllInvoicesController } from "@/src/controllers/invoice/get-al
 import InvoiceActions from "./_components/invoice-actions";
 import InvoiceRow from "./_components/invoice-row";
 import { createInvoiceRepository } from "@/src/infrastructure/repositories/invoice.repository";
-import { cookies } from "../lib/cookies";
+import { createClient } from "../lib/client";
 
 async function getInvoices(): Promise<Invoice[]> {
-  const repository = createInvoiceRepository(cookies);
+  const client = await createClient();
+  const repository = createInvoiceRepository(client);
   const controller = createGetAllInvoicesController(repository);
   return await controller();
 }
