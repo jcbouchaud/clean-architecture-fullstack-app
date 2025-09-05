@@ -50,7 +50,7 @@ export default function InvoicesDataTable({
       </Table>
       {/* Forms outside the table */}
       {invoices.map((invoice) => (
-        <InvoiceForms key={`forms-${invoice.id}`} invoice={invoice} />
+        <InvoiceForms key={`forms-${invoice.id}`} invoiceId={invoice.id} />
       ))}
     </div>
   );
@@ -70,7 +70,6 @@ function InvoiceTableRow({ invoice }: { invoice: Invoice }) {
           name="clientName"
           defaultValue={invoice.clientName}
           form={`update-form-${invoice.id}`}
-          className="border-0 p-0 h-auto focus-visible:ring-0"
         />
       </TableCell>
       <TableCell>
@@ -79,7 +78,6 @@ function InvoiceTableRow({ invoice }: { invoice: Invoice }) {
           type="date"
           defaultValue={formatDate(invoice.dateIssued)}
           form={`update-form-${invoice.id}`}
-          className="border-0 p-0 h-auto focus-visible:ring-0"
         />
       </TableCell>
       <TableCell>
@@ -89,7 +87,6 @@ function InvoiceTableRow({ invoice }: { invoice: Invoice }) {
           step="0.01"
           defaultValue={invoice.vatRate}
           form={`update-form-${invoice.id}`}
-          className="border-0 p-0 h-auto focus-visible:ring-0"
         />
       </TableCell>
       <TableCell>
@@ -100,7 +97,6 @@ function InvoiceTableRow({ invoice }: { invoice: Invoice }) {
             invoice.dateOfPayment ? formatDate(invoice.dateOfPayment) : ""
           }
           form={`update-form-${invoice.id}`}
-          className="border-0 p-0 h-auto focus-visible:ring-0"
         />
       </TableCell>
       <TableCell>
@@ -132,13 +128,9 @@ function InvoiceTableRow({ invoice }: { invoice: Invoice }) {
   );
 }
 
-function InvoiceForms({ invoice }: { invoice: Invoice }) {
+function InvoiceUpdateForm({ invoiceId }: { invoiceId: string }) {
   const [updateState, formUpdateAction] = useActionState(
     updateInvoice,
-    initialState
-  );
-  const [deleteState, formDeleteAction] = useActionState(
-    deleteInvoice,
     initialState
   );
   const { toast } = useToast();
@@ -151,6 +143,24 @@ function InvoiceForms({ invoice }: { invoice: Invoice }) {
     }
   }, [updateState, toast]);
 
+  return (
+    <form
+      id={`update-form-${invoiceId}`}
+      action={formUpdateAction}
+      className="hidden"
+    >
+      <input type="hidden" name="id" value={invoiceId} />
+    </form>
+  );
+}
+
+function InvoiceDeleteForm({ invoiceId }: { invoiceId: string }) {
+  const [deleteState, formDeleteAction] = useActionState(
+    deleteInvoice,
+    initialState
+  );
+  const { toast } = useToast();
+
   useEffect(() => {
     if (deleteState?.error) {
       toast.error(deleteState.error);
@@ -160,21 +170,21 @@ function InvoiceForms({ invoice }: { invoice: Invoice }) {
   }, [deleteState, toast]);
 
   return (
+    <form
+      id={`delete-form-${invoiceId}`}
+      action={formDeleteAction}
+      className="hidden"
+    >
+      <input type="hidden" name="id" value={invoiceId} />
+    </form>
+  );
+}
+
+function InvoiceForms({ invoiceId }: { invoiceId: string }) {
+  return (
     <>
-      <form
-        id={`update-form-${invoice.id}`}
-        action={formUpdateAction}
-        className="hidden"
-      >
-        <input type="hidden" name="id" value={invoice.id} />
-      </form>
-      <form
-        id={`delete-form-${invoice.id}`}
-        action={formDeleteAction}
-        className="hidden"
-      >
-        <input type="hidden" name="id" value={invoice.id} />
-      </form>
+      <InvoiceUpdateForm invoiceId={invoiceId} />
+      <InvoiceDeleteForm invoiceId={invoiceId} />
     </>
   );
 }

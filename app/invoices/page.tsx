@@ -16,13 +16,25 @@ export default async function InvoicesPage() {
   const invoices = await getInvoices();
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Invoices</h1>
-        <InvoiceActions />
-      </div>
+    <div className="min-h-screen bg-background gradient-purple-subtle">
+      <div className="p-6">
+        <div className="max-w-7xl mx-auto space-y-8">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              Invoices
+            </h1>
+            <p className="text-muted-foreground">
+              Manage and track your invoices
+            </p>
+          </div>
 
-      <InvoicesDataTable invoices={invoices} />
+          <InvoiceActions />
+
+          <div className="bg-card rounded-lg shadow-sm border border-border p-6">
+            <InvoicesDataTable invoices={invoices} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
