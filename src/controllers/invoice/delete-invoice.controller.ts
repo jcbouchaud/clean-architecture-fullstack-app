@@ -17,13 +17,9 @@ export const createDeleteInvoiceController = (
       return await deleteInvoiceUseCaseInstance(validatedData.id);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        throw new Error(`Validation error: ${error.errors[0].message}`);
+        throw new Error(`Validation error: ${error.issues[0].message}`);
       }
       throw error;
     }
   };
 };
-
-
-
-

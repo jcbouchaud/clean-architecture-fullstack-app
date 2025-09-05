@@ -19,17 +19,14 @@ export const createUpdateInvoiceController = (
 
   return async (input: UpdateInvoiceInput) => {
     try {
+      console.log("input", input);
       const validatedData = updateInvoiceSchema.parse(input);
       return await updateInvoiceUseCaseInstance(validatedData);
     } catch (error) {
       if (error instanceof z.ZodError) {
-        throw new Error(`Validation error: ${error.errors[0].message}`);
+        throw new Error(`Validation error: ${error.issues[0].message}`);
       }
       throw error;
     }
   };
 };
-
-
-
-

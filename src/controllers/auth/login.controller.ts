@@ -21,7 +21,7 @@ export const createLoginController = (authService: IAuthService) => {
     } catch (error) {
       if (error instanceof z.ZodError) {
         throw new AuthenticationError(
-          error.errors[0].message,
+          error.issues[0].message,
           AuthenticationErrorCode.INVALID_EMAIL,
           error
         );

@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useState, useEffect } from "react";
 import { login, signup } from "./actions";
 import { useFormStatus } from "react-dom";
+import { useToast } from "@/lib/hooks/use-toast";
 
 const initialState = {
   error: "",
@@ -53,6 +54,13 @@ export default function AuthPage() {
     isLogin ? login : signup,
     initialState
   );
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (state?.error) {
+      toast.error(state.error);
+    }
+  }, [state, toast]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -93,12 +101,6 @@ export default function AuthPage() {
               />
             </div>
           </div>
-
-          {state.error && (
-            <div className="text-red-500 text-sm text-center">
-              {state.error}
-            </div>
-          )}
 
           <div>
             <SubmitButton />

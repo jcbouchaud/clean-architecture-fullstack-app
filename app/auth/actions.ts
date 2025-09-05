@@ -3,7 +3,7 @@
 import { createAuthService } from "@/infrastructure/services/auth.service";
 import { AuthenticationError } from "@/entities/errors/authentication.error";
 import { redirect } from "next/navigation";
-import { createClient } from "../lib/client";
+import { createClient } from "../../lib/client";
 import { cookies as nextCookies } from "next/headers";
 import { createLoginController } from "@/src/controllers/auth/login.controller";
 import { createSignupController } from "@/src/controllers/auth/signup.controller";

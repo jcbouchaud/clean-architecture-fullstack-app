@@ -1,9 +1,9 @@
 import { Invoice } from "@/src/entities/invoice";
 import { createGetAllInvoicesController } from "@/src/controllers/invoice/get-all-invoices.controller";
-import InvoiceActions from "./_components/invoice-actions";
-import InvoiceRow from "./_components/invoice-row";
+import InvoiceActions from "../../components/invoices/invoice-actions";
+import InvoicesDataTable from "../../components/invoices/invoices-data-table";
 import { createInvoiceRepository } from "@/src/infrastructure/repositories/invoice.repository";
-import { createClient } from "../lib/client";
+import { createClient } from "../../lib/client";
 
 async function getInvoices(): Promise<Invoice[]> {
   const client = await createClient();
@@ -22,34 +22,7 @@ export default async function InvoicesPage() {
         <InvoiceActions />
       </div>
 
-      <div className="bg-white shadow rounded-lg">
-        <table className="min-w-full">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Client
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Date Issued
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                VAT Rate
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {invoices.map((invoice) => (
-              <InvoiceRow key={invoice.id} invoice={invoice} />
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <InvoicesDataTable invoices={invoices} />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { type NextRequest } from "next/server";
-import { updateSession } from "./app/lib/cookies";
+import { updateSession } from "./lib/cookies";
 
 export async function middleware(request: NextRequest) {
   return await updateSession(request);

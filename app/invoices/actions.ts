@@ -6,12 +6,13 @@ import { createUpdateInvoiceController } from "@/src/controllers/invoice/update-
 import { createDeleteInvoiceController } from "@/src/controllers/invoice/delete-invoice.controller";
 import { CreateInvoiceInput, UpdateInvoiceInput } from "@/src/entities/invoice";
 import { createInvoiceRepository } from "@/src/infrastructure/repositories/invoice.repository";
-import { createClient } from "../lib/client";
+import { createClient } from "../../lib/client";
 
 type ActionState =
   | {
       error: string;
       code: string;
+      success?: boolean;
     }
   | undefined;
 
@@ -31,16 +32,24 @@ export async function createInvoice(
     const repository = createInvoiceRepository(client);
     const controller = createCreateInvoiceController(repository);
     await controller(data);
+    revalidatePath("/invoices");
+    return {
+      error: "",
+      code: "",
+      success: true,
+    };
   } catch (error) {
     return {
       error: `Failed to create invoice: ${error}`,
       code: "UNKNOWN",
     };
   }
-  revalidatePath("/invoices");
 }
 
-export async function updateInvoice(formData: FormData) {
+export async function updateInvoice(
+  prevState: ActionState,
+  formData: FormData
+) {
   try {
     const data: UpdateInvoiceInput = {
       id: formData.get("id") as string,
@@ -55,13 +64,23 @@ export async function updateInvoice(formData: FormData) {
     const controller = createUpdateInvoiceController(repository);
     await controller(data);
     revalidatePath("/invoices");
+    return {
+      error: "",
+      code: "",
+      success: true,
+    };
   } catch (error) {
-    console.error("Failed to update invoice:", error);
-    throw new Error("Failed to update invoice");
+    return {
+      error: `Failed to update invoice: ${error}`,
+      code: "UNKNOWN",
+    };
   }
 }
 
-export async function deleteInvoice(formData: FormData) {
+export async function deleteInvoice(
+  prevState: ActionState,
+  formData: FormData
+) {
   try {
     const id = formData.get("id") as string;
     const client = await createClient();
@@ -69,8 +88,15 @@ export async function deleteInvoice(formData: FormData) {
     const controller = createDeleteInvoiceController(repository);
     await controller(id);
     revalidatePath("/invoices");
+    return {
+      error: "",
+      code: "",
+      success: true,
+    };
   } catch (error) {
-    console.error("Failed to delete invoice:", error);
-    throw new Error("Failed to delete invoice");
+    return {
+      error: `Failed to delete invoice: ${error}`,
+      code: "UNKNOWN",
+    };
   }
 }
