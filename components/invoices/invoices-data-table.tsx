@@ -36,10 +36,10 @@ export default function InvoicesDataTable({
         <TableHeader>
           <TableRow>
             <TableHead>Client</TableHead>
-            <TableHead>Date Issued</TableHead>
-            <TableHead>VAT Rate</TableHead>
-            <TableHead>Payment Date</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>Date d'émission</TableHead>
+            <TableHead>Taux de TVA</TableHead>
+            <TableHead>Date de paiement</TableHead>
+            <TableHead>Statut</TableHead>
             <TableHead className="text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -102,7 +102,7 @@ function InvoiceTableRow({ invoice }: { invoice: Invoice }) {
       </TableCell>
       <TableCell>
         <Badge variant={isPaid ? "default" : "secondary"}>
-          {isPaid ? "Paid" : "Pending"}
+          {isPaid ? "Payé" : "En attente"}
         </Badge>
       </TableCell>
       <TableCell className="text-right">
@@ -112,7 +112,7 @@ function InvoiceTableRow({ invoice }: { invoice: Invoice }) {
             variant="ghost"
             size="icon"
             form={`update-form-${invoice.id}`}
-            title="Save changes"
+            title="Enregistrer les modifications"
           >
             <Save className="h-4 w-4 text-primary" />
           </Button>
@@ -121,7 +121,7 @@ function InvoiceTableRow({ invoice }: { invoice: Invoice }) {
             variant="ghost"
             size="icon"
             form={`delete-form-${invoice.id}`}
-            title="Delete invoice"
+            title="Supprimer la facture"
           >
             <Trash2 className="h-4 w-4 text-destructive" />
           </Button>
@@ -142,7 +142,7 @@ function InvoiceUpdateForm({ invoiceId }: { invoiceId: string }) {
     if (updateState?.error) {
       toast.error(updateState.error);
     } else if (updateState?.success) {
-      toast.success("Invoice updated successfully!");
+      toast.success("Facture mise à jour avec succès !");
     }
   }, [updateState, toast]);
 
@@ -168,7 +168,7 @@ function InvoiceDeleteForm({ invoiceId }: { invoiceId: string }) {
     if (deleteState?.error) {
       toast.error(deleteState.error);
     } else if (deleteState?.success) {
-      toast.success("Invoice deleted successfully!");
+      toast.success("Facture supprimée avec succès !");
     }
   }, [deleteState, toast]);
 

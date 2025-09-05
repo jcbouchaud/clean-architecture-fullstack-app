@@ -21,14 +21,14 @@ export default function InvoiceActions() {
     if (state?.error) {
       toast.error(state.error);
     } else if (state?.success) {
-      toast.success("Invoice created successfully!");
+      toast.success("Facture créée avec succès !");
     }
   }, [state, toast]);
 
   return (
     <div className="bg-card rounded-lg border border-border p-6 shadow-sm gradient-elevated">
       <h3 className="text-lg font-semibold text-foreground mb-4">
-        Create New Invoice
+        Créer une nouvelle facture
       </h3>
       <form action={formAction} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
@@ -37,14 +37,14 @@ export default function InvoiceActions() {
               htmlFor="clientName"
               className="text-sm font-medium text-foreground"
             >
-              Client Name
+              Nom du client
             </Label>
             <Input
               id="clientName"
               type="text"
               name="clientName"
               required
-              placeholder="Enter client name"
+              placeholder="Saisir le nom du client"
               className="border-border focus:ring-ring"
             />
           </div>
@@ -54,7 +54,7 @@ export default function InvoiceActions() {
               htmlFor="dateIssued"
               className="text-sm font-medium text-foreground"
             >
-              Date Issued
+              Date d'émission
             </Label>
             <Input
               id="dateIssued"
@@ -71,7 +71,7 @@ export default function InvoiceActions() {
               htmlFor="vatRate"
               className="text-sm font-medium text-foreground"
             >
-              VAT Rate (%)
+              Taux de TVA (%)
             </Label>
             <Input
               id="vatRate"
@@ -91,7 +91,7 @@ export default function InvoiceActions() {
               htmlFor="attachment"
               className="text-sm font-medium text-foreground"
             >
-              Attachment URL
+              URL de la pièce jointe
             </Label>
             <Input
               id="attachment"
@@ -108,7 +108,7 @@ export default function InvoiceActions() {
             type="submit"
             className="gradient-primary hover:opacity-90 transition-opacity"
           >
-            Create Invoice
+            Créer la facture
           </Button>
         </div>
       </form>

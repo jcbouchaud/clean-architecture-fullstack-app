@@ -7,14 +7,14 @@ export default function InvoicesLayout({
 }) {
   // Breadcrumbs for invoices page
   const breadcrumbs = [
-    { href: "/", label: "Home" },
-    { href: "/invoices", label: "Invoices" },
+    { href: "/", label: "Accueil" },
+    { href: "/invoices", label: "Factures" },
   ];
 
   return (
     <PageLayout
       title="Factures"
-      description="Manage and track your invoices"
+      description="Gérez et suivez vos factures"
       breadcrumbs={breadcrumbs}
     >
       {children}

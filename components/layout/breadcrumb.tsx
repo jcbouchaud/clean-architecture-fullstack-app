@@ -16,7 +16,7 @@ const getPageTitle = (pathname: string): string => {
   const segments = pathname.split("/").filter(Boolean);
 
   if (segments.length === 0) {
-    return "Home";
+    return "Accueil";
   }
 
   // Capitalize and format the last segment
@@ -56,7 +56,7 @@ export function AppBreadcrumb({
     const segments = pathname.split("/").filter(Boolean);
     breadcrumbs = [
       ...(showHome
-        ? [{ href: "/", label: "Home", isLast: segments.length === 0 }]
+        ? [{ href: "/", label: "Accueil", isLast: segments.length === 0 }]
         : []),
       ...segments.map((segment, index) => {
         const currentPath = "/" + segments.slice(0, index + 1).join("/");

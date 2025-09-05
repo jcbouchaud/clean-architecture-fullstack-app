@@ -44,7 +44,7 @@ function SubmitButton() {
           </svg>
         </span>
       ) : null}
-      Sign in
+      Se connecter
     </button>
   );
 }
@@ -68,7 +68,7 @@ export default function AuthPage() {
       <PageLayout
         title="Authentification"
         description={
-          isLogin ? "Sign in to your account" : "Create a new account"
+          isLogin ? "Connectez-vous à votre compte" : "Créer un nouveau compte"
         }
       >
         <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -77,7 +77,7 @@ export default function AuthPage() {
               <div className="rounded-lg shadow-sm -space-y-px bg-card p-6 border border-border">
                 <div>
                   <label htmlFor="email-address" className="sr-only">
-                    Email address
+                    Adresse e-mail
                   </label>
                   <input
                     id="email-address"
@@ -86,12 +86,12 @@ export default function AuthPage() {
                     autoComplete="email"
                     required
                     className="appearance-none rounded-none relative block w-full px-3 py-2 border border-border placeholder-muted-foreground text-foreground rounded-t-md focus:outline-none focus:ring-ring focus:border-primary focus:z-10 sm:text-sm bg-background"
-                    placeholder="Email address"
+                    placeholder="Adresse e-mail"
                   />
                 </div>
                 <div>
                   <label htmlFor="password" className="sr-only">
-                    Password
+                    Mot de passe
                   </label>
                   <input
                     id="password"
@@ -100,7 +100,7 @@ export default function AuthPage() {
                     autoComplete="current-password"
                     required
                     className="appearance-none rounded-none relative block w-full px-3 py-2 border border-border placeholder-muted-foreground text-foreground rounded-b-md focus:outline-none focus:ring-ring focus:border-primary focus:z-10 sm:text-sm bg-background"
-                    placeholder="Password"
+                    placeholder="Mot de passe"
                   />
                 </div>
               </div>
@@ -117,8 +117,8 @@ export default function AuthPage() {
                 onClick={() => setIsLogin(!isLogin)}
               >
                 {isLogin
-                  ? "Don't have an account? Sign up"
-                  : "Already have an account? Sign in"}
+                  ? "Vous n'avez pas de compte ? S'inscrire"
+                  : "Vous avez déjà un compte ? Se connecter"}
               </button>
             </div>
           </div>
