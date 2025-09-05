@@ -16,7 +16,7 @@ export default async function InvoicesPage() {
   const invoices = await getInvoices();
 
   return (
-    <div className="min-h-screen bg-background gradient-purple-subtle">
+    <div className="min-h-screen bg-background gradient-surface">
       <div className="p-6">
         <div className="max-w-7xl mx-auto space-y-8">
           <div className="text-center">
@@ -30,7 +30,7 @@ export default async function InvoicesPage() {
 
           <InvoiceActions />
 
-          <div className="bg-card rounded-lg shadow-sm border border-border p-6">
+          <div className="bg-card rounded-lg shadow-sm border border-border p-6 gradient-elevated">
             <InvoicesDataTable invoices={invoices} />
           </div>
         </div>

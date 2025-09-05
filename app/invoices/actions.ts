@@ -57,6 +57,7 @@ export async function updateInvoice(
       dateIssued: new Date(formData.get("dateIssued") as string),
       vatRate: parseFloat(formData.get("vatRate") as string),
       attachment: (formData.get("attachment") as string) || undefined,
+      dateOfPayment: new Date(formData.get("dateOfPayment") as string),
     };
 
     const client = await createClient();

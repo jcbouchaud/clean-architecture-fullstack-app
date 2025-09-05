@@ -3,11 +3,11 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center gradient-purple-light">
+    <div className="min-h-screen bg-background flex items-center justify-center gradient-surface">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="mb-6">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full gradient-purple flex items-center justify-center">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full gradient-primary flex items-center justify-center">
               <span className="text-2xl">📄</span>
             </div>
             <h1 className="text-3xl font-bold text-foreground mb-4">

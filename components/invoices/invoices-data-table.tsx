@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/lib/hooks/use-toast";
+import { Save, Trash2 } from "lucide-react";
 
 interface InvoicesDataTableProps {
   invoices: Invoice[];
@@ -108,19 +109,21 @@ function InvoiceTableRow({ invoice }: { invoice: Invoice }) {
         <div className="flex justify-end gap-2">
           <Button
             type="submit"
-            variant="outline"
-            size="sm"
+            variant="ghost"
+            size="icon"
             form={`update-form-${invoice.id}`}
+            title="Save changes"
           >
-            Save
+            <Save className="h-4 w-4 text-primary" />
           </Button>
           <Button
             type="submit"
-            variant="destructive"
-            size="sm"
+            variant="ghost"
+            size="icon"
             form={`delete-form-${invoice.id}`}
+            title="Delete invoice"
           >
-            Delete
+            <Trash2 className="h-4 w-4 text-destructive" />
           </Button>
         </div>
       </TableCell>

@@ -26,7 +26,7 @@ export default function InvoiceActions() {
   }, [state, toast]);
 
   return (
-    <div className="bg-card rounded-lg border border-border p-6 shadow-sm">
+    <div className="bg-card rounded-lg border border-border p-6 shadow-sm gradient-elevated">
       <h3 className="text-lg font-semibold text-foreground mb-4">
         Create New Invoice
       </h3>
@@ -106,7 +106,7 @@ export default function InvoiceActions() {
         <div className="flex justify-end">
           <Button
             type="submit"
-            className="gradient-purple hover:opacity-90 transition-opacity"
+            className="gradient-primary hover:opacity-90 transition-opacity"
           >
             Create Invoice
           </Button>
