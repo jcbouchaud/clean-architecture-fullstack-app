@@ -1,3 +1,5 @@
+import { InvoicesSkeleton } from "@/components/invoices/invoices-skeleton";
+
 export default function Loading() {
-  return <div>Loading...</div>;
+  return <InvoicesSkeleton />;
 }

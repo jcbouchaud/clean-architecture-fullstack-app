@@ -4,6 +4,7 @@ import { useActionState, useState, useEffect } from "react";
 import { login, signup } from "./actions";
 import { useFormStatus } from "react-dom";
 import { useToast } from "@/lib/hooks/use-toast";
+import { PageLayout } from "@/components/layout/page-layout";
 
 const initialState = {
   error: "",
@@ -63,62 +64,66 @@ export default function AuthPage() {
   }, [state, toast]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8 gradient-surface">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-foreground">
-            {isLogin ? "Sign in to your account" : "Create a new account"}
-          </h2>
-        </div>
-        <form className="mt-8 space-y-6" action={formAction}>
-          <div className="rounded-lg shadow-sm -space-y-px bg-card p-6 border border-border">
-            <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-border placeholder-muted-foreground text-foreground rounded-t-md focus:outline-none focus:ring-ring focus:border-primary focus:z-10 sm:text-sm bg-background"
-                placeholder="Email address"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-border placeholder-muted-foreground text-foreground rounded-b-md focus:outline-none focus:ring-ring focus:border-primary focus:z-10 sm:text-sm bg-background"
-                placeholder="Password"
-              />
+    <div className="max-w-4xl mx-auto">
+      <PageLayout
+        title="Authentification"
+        description={
+          isLogin ? "Sign in to your account" : "Create a new account"
+        }
+      >
+        <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-md w-full space-y-8">
+            <form className="mt-8 space-y-6" action={formAction}>
+              <div className="rounded-lg shadow-sm -space-y-px bg-card p-6 border border-border">
+                <div>
+                  <label htmlFor="email-address" className="sr-only">
+                    Email address
+                  </label>
+                  <input
+                    id="email-address"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-border placeholder-muted-foreground text-foreground rounded-t-md focus:outline-none focus:ring-ring focus:border-primary focus:z-10 sm:text-sm bg-background"
+                    placeholder="Email address"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="password" className="sr-only">
+                    Password
+                  </label>
+                  <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    className="appearance-none rounded-none relative block w-full px-3 py-2 border border-border placeholder-muted-foreground text-foreground rounded-b-md focus:outline-none focus:ring-ring focus:border-primary focus:z-10 sm:text-sm bg-background"
+                    placeholder="Password"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <SubmitButton />
+              </div>
+            </form>
+
+            <div className="text-center">
+              <button
+                type="button"
+                className="text-sm text-primary hover:text-primary/80 transition-colors duration-200"
+                onClick={() => setIsLogin(!isLogin)}
+              >
+                {isLogin
+                  ? "Don't have an account? Sign up"
+                  : "Already have an account? Sign in"}
+              </button>
             </div>
           </div>
-
-          <div>
-            <SubmitButton />
-          </div>
-        </form>
-
-        <div className="text-center">
-          <button
-            type="button"
-            className="text-sm text-primary hover:text-primary/80 transition-colors duration-200"
-            onClick={() => setIsLogin(!isLogin)}
-          >
-            {isLogin
-              ? "Don't have an account? Sign up"
-              : "Already have an account? Sign in"}
-          </button>
         </div>
-      </div>
+      </PageLayout>
     </div>
   );
 }
