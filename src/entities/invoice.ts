@@ -23,7 +23,3 @@ export interface UpdateInvoiceInput {
   clientName?: string;
   attachment?: string;
 }
-
-
-
-
